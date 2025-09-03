@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume Generator - Malvi Devendra Jaysukhbhai</title>
+  <style>
+    /* Reset/Normalize */
+    body, h1, h2, h3, h4, h5, h6, p, ul, li, input, label {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+    body {
+      background: #f8f8f8;
+      padding: 40px 20px;
+      color: #111;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 35px 50px;
+      box-shadow: 0 0 17px rgb(0 0 0 / 0.1);
+    }
+    .center-text {
+      text-align: center;
+    }
+    /* Bold uppercase lines to separate sections */
+    hr.section-line {
+      border: none;
+      border-top: 1px solid #999;
+      margin: 12px 0 18px 0;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    /* Header - Name */
+    #headerName {
+      font-weight: 900;
+      font-size: 1.9rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.4rem;
+    }
+    /* Profession label in uppercase and smaller with letter spacing */
+    #headerProfession {
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: 1.5px;
+      margin-bottom: 3px;
+    }
+    /* Contact info line with small bullet, spaced */
+    #contactInfo {
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    #contactInfo span {
+      margin: 0 6px;
+    }
+    #contactInfo span:before {
+      content: "●";
+      font-size: 0.6em;
+      color: #666;
+      margin-right: 6px;
+    }
+
+    /* Section titles styling - centered smallcaps with lines */
+    .section-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 2.2px;
+      text-align: center;
+      font-family: 'Georgia', serif;
+      margin-bottom: 10px;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .section-title:before,
+    .section-title:after {
+      content: "";
+      flex: 1 1 auto;
+      height: 1px;
+      background: #222;
+      opacity: 0.9;
+    }
+
+    /* Paragraph and lists */
+    .professional-summary,
+    .personal-details, 
+    .additional-personal-info, 
+    .experience-list,
+    .education-items {
+      font-size: 0.89rem;
+      line-height: 1.5;
+      max-width: 850px;
+      margin: 8px auto 0;
+      color: #222;
+    }
+
+    .skills-grid {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px auto 0;
+      max-width: 100%;
+      gap: 18px;
+    }
+    .skills-column {
+      flex-basis: 46%;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #222;
+    }
+    .skills-column ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .skills-column ul li {
+      margin-bottom: 6px;
+      padding-left: 12px;
+      position: relative;
+    }
+    .skills-column ul li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Experience bullet list */
+    .experience-list {
+      max-width: 850px;
+      margin: 8px auto 0;
+      padding-left: 18px;
+      font-size: 0.9rem;
+      color: #222;
+    }
+    .experience-list li {
+      margin-bottom: 6px;
+    }
+
+    /* Education bold titles and italic school name */
+    .education-items {
+      max-width: 850px;
+      margin: 8px auto 0;
+      font-size: 0.9rem;
+      color: #222;
+    }
+    .education-item {
+      margin-bottom: 8px;
+    }
+    .education-item b {
+      font-weight: 900;
+    }
+    .education-school {
+      font-style: italic;
+    }
+    .education-location {
+      font-style: normal;
+      font-weight: 400;
+      color: #555;
+    }
+
+    /* Personal Details formatting in 2 columns */
+    .personal-details {
+      display: flex;
+      justify-content: space-between;
+      max-width: 850px;
+      margin: 8px auto;
+      font-size: 0.9rem;
+      color: #222;
+      font-weight: 600;
+    }
+    .personal-details span {
+      font-weight: 400;
+      margin-left: 6px;
+      font-style: normal;
+    }
+
+    /* Additional Personal Info as bullet list */
+    .additional-personal-info ul {
+      list-style: none;
+      padding-left: 15px;
+      max-width: 850px;
+      margin: 8px auto 0;
+      font-size: 0.9rem;
+      color: #222;
+    }
+    .additional-personal-info ul li {
+      margin-bottom: 6px;
+      padding-left: 12px;
+      position: relative;
+    }
+    .additional-personal-info ul li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Languages grid with bars style */
+    .languages-section {
+      display: flex;
+      justify-content: space-between;
+      max-width: 850px;
+      margin: 20px auto 0;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .language {
+      flex-basis: 30%;
+      min-width: 180px;
+      font-size: 0.9rem;
+      color: #222;
+    }
+    .language-name {
+      font-weight: 700;
+      margin-bottom: 5px;
+      font-family: 'Georgia', serif;
+    }
+    .language-level {
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .lang-bar-container {
+      background: linear-gradient(90deg,
+        #e5e5e5 0 20%, transparent 20% 21%,
+        #e5e5e5 21% 40%, transparent 40% 41%,
+        #e5e5e5 41% 60%, transparent 60% 61%,
+        #e5e5e5 61% 80%, transparent 80% 81%,
+        #e5e5e5 81% 100%);
+      background-color: #ddd;
+      height: 12px;
+      width: 100%;
+      border-radius: 7px;
+      position: relative;
+      overflow: hidden;
+    }
+    .lang-bar-fill {
+      height: 100%;
+      background: #222;
+      border-radius: 7px 0 0 7px;
+      position: relative;
+    }
+    .lang-bilingual {
+      width: 95%;
+    }
+    .lang-intermediate {
+      width: 45%;
+    }
+  /* FORM STYLE */
+  #inputFormWrapper {
+    max-width: 700px;
+    margin: 30px auto 60px auto;
+    background: white;
+    border: 1px solid #bbb;
+    border-radius: 7px;
+    padding: 28px 36px 26px 36px;
+    box-shadow: 3px 3px 6px rgb(0 0 0 / 0.07);
+  }
+  #inputFormWrapper h2 {
+    font-family: Georgia, serif;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 700;
+    font-size: 1.85rem;
+    margin-bottom: 18px;
+  }
+  form label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+    margin-top: 12px;
+    font-family: serif;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="date"],
+  form input[type="tel"],
+  form select,
+  form textarea {
+    width: 100%;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    border-radius: 3px;
+    border: 1.8px solid #777;
+    transition: border-color 0.2s ease-in-out;
+  }
+  form input[type="text"]:focus,
+  form input[type="email"]:focus,
+  form input[type="date"]:focus,
+  form input[type="tel"]:focus,
+  form select:focus,
+  form textarea:focus {
+    border-color: #444;
+    outline: none;
+  }
+  form textarea {
+    resize: vertical;
+    min-height: 56px;
+  }
+  form button {
+    display: block;
+    margin: 28px auto 0 auto;
+    background: #222;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 38px;
+    font-family: Georgia, serif;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out;
+  }
+  form button:hover {
+    background: #444;
+  }
+  /* Action buttons shown on generated resume */
+  .actions {
+    text-align: center;
+    margin: 8px 0 4px 0;
+  }
+  .actions button {
+    background: #222;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 22px;
+    color: #fff;
+    font-family: Georgia, serif;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out;
+  }
+  .actions button:hover { background: #444; }
+  @media(max-width: 720px) {
+    main {
+      padding: 25px 30px;
+    }
+    .skills-grid {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .skills-column {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .personal-details {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .languages-section {
+      gap: 12px;
+    }
+    .language {
+      flex-basis: 100%;
+    }
+  }
+  /* Print styles for clean PDF */
+  @media print {
+    body { background: #fff; padding: 0; }
+    #inputFormWrapper { display: none !important; }
+    main { box-shadow: none; padding: 20mm 18mm; }
+    .section-line { width: 100%; margin: 6px 0 14px; }
+    .actions { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="inputFormWrapper">
+  <h2>Enter Your Information</h2>
+  <form id="resumeForm" autocomplete="off">
+    <label for="fullName">Full Name (e.g. Malvi Devendra Jaysukhbhai)*</label>
+    <input type="text" id="fullName" name="fullName" required placeholder="Full name" />
+
+    <label for="profession">Profession*</label>
+    <input type="text" id="profession" name="profession" required placeholder="Your profession or title" />
+
+    <label for="address">Address*</label>
+    <input type="text" id="address" name="address" required placeholder="e.g. Gopalgram Ta- Dhari Di- Amreli" />
+
+    <label for="phone">Phone Number*</label>
+    <input type="tel" id="phone" name="phone" pattern="[0-9+ ]+" required placeholder="6353740214" />
+
+    <label for="email">Email*</label>
+    <input type="email" id="email" name="email" required placeholder="name@example.com" />
+
+    <label for="professionalSummary">Professional Summary*</label>
+    <textarea id="professionalSummary" name="professionalSummary" required rows="3" placeholder="Brief summary about yourself"></textarea>
+
+    <label>Skills (Enter comma separated, example: teamwork, problem-solving)</label>
+    <input type="text" id="skillsLeft" name="skillsLeft" placeholder="Left column skills" />
+    <input type="text" id="skillsRight" name="skillsRight" placeholder="Right column skills" />
+
+    <label>Experience (List each separated by semicolon or leave as 'No')</label>
+    <textarea id="experience" name="experience" rows="2" placeholder="Example: Company X - Position, Time period;"></textarea>
+
+    <label for="education1">Education 1*</label>
+    <input type="text" id="education1" name="education1" placeholder="e.g. B.C.A.: RUNNING, SEM-3, Expected in 07/2027" required />
+    <input type="text" id="education1School" name="education1School" placeholder="e.g. Kamnani Science And Prataprai Art's College - Amreli" required />
+
+    <label for="education2">Education 2*</label>
+    <input type="text" id="education2" name="education2" placeholder="e.g. H.S.C.: 01/2024" required />
+    <input type="text" id="education2School" name="education2School" placeholder="e.g. Zaverchand Meghani Higher Secondary School" required />
+    <input type="text" id="education2Gpa" name="education2Gpa" placeholder="GPA: 54.72" required />
+
+    <label for="dob">Date of Birth*</label>
+    <input type="date" id="dob" name="dob" required />
+
+    <label for="gender">Gender*</label>
+    <select id="gender" name="gender" required>
+      <option value="">Select gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+      <option value="Prefer not to say">Prefer not to say</option>
+    </select>
+
+    <label for="religion">Religion*</label>
+    <input type="text" id="religion" name="religion" required placeholder="e.g. Hindu" />
+
+    <label for="languages">Languages and proficiency (one per line, use format: language - level)</label>
+    <textarea id="languages" name="languages" rows="4" placeholder="Example:
+Hindi - Bilingual or Proficient (C2)
+English - Intermediate (B1)
+Gujarati - Bilingual or Proficient (C2)"></textarea>
+
+    <button type="submit">Generate Resume</button>
+  </form>
+</div>
+
+<main id="resume" style="display:none;" aria-label="Generated Resume">
+  <header class="center-text" role="banner" aria-label="Resume Header">
+    <h1 id="headerName" aria-live="polite"></h1>
+    <div id="headerProfession" aria-live="polite"></div>
+    <div id="contactInfo" aria-live="polite"></div>
+    <div class="actions">
+      <button type="button" id="downloadBtn" title="Download as PDF">Download PDF</button>
+    </div>
+  </header>
+
+  <hr class="section-line" />
+  <section>
+    <h2 class="section-title" tabindex="0">Professional Summary</h2>
+    <p class="professional-summary" id="profSummary" tabindex="0"></p>
+  </section>
+
+  <hr class="section-line" />
+  <section>
+    <h2 class="section-title" tabindex="0">Skills</h2>
+    <div class="skills-grid" aria-label="Skills list">
+      <div class="skills-column" id="skillsLeftCol" tabindex="0"></div>
+      <div class="skills-column" id="skillsRightCol" tabindex="0"></div>
+    </div>
+  </section>
+
+  <hr class="section-line" />
+  <section aria-label="Experience Section">
+    <h2 class="section-title" tabindex="0">Experience</h2>
+    <ul class="experience-list" id="experienceList" tabindex="0">
+    </ul>
+  </section>
+
+  <hr class="section-line" />
+  <section aria-label="Education Section">
+    <h2 class="section-title" tabindex="0">Education</h2>
+    <div class="education-items" tabindex="0">
+      <p class="education-item">
+        <b id="education1title"></b><br />
+        <span class="education-school" id="education1school"></span>
+      </p>
+      <p class="education-item">
+        <b id="education2title"></b><br />
+        <span class="education-school" id="education2school"></span><br />
+        <span id="education2gpa"></span>
+      </p>
+    </div>
+  </section>
+
+  <hr class="section-line" />
+  <section aria-label="Personal Details">
+    <h2 class="section-title" tabindex="0">Personal Details</h2>
+    <div class="personal-details" tabindex="0">
+      <div><b>Date of Birth:</b> <span id="pdDob"></span></div>
+      <div><b>Gender:</b> <span id="pdGender"></span></div>
+    </div>
+    <div class="personal-details" tabindex="0" style="margin-top: 3px;">
+      <div><b>Religion:</b> <span id="pdReligion"></span></div>
+      <div><b>Address:</b> <span id="pdAddress"></span></div>
+    </div>
+  </section>
+
+  <hr class="section-line" />
+  <section aria-label="Additional Personal Info">
+    <h2 class="section-title" tabindex="0">Additional Personal Info</h2>
+    <ul class="additional-personal-info" id="additionalPersonalInfo" tabindex="0">
+    </ul>
+  </section>
+
+  <hr class="section-line" />
+  <section aria-label="Languages Section">
+    <h2 class="section-title" tabindex="0">Languages</h2>
+    <div class="languages-section" id="languagesSection" tabindex="0">
+    </div>
+  </section>
+</main>
+
+<script>
+  const form = document.getElementById('resumeForm');
+  const resume = document.getElementById('resume');
+
+  function capitalizeWords(text) {
+    return text.replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Name and Profession
+    const fullName = capitalizeWords(form.fullName.value.trim());
+    const profession = form.profession.value.trim();
+
+    // Contact Info
+    const address = form.address.value.trim();
+    const phone = form.phone.value.trim();
+    const email = form.email.value.trim();
+
+    // Professional Summary
+    const profSummary = form.professionalSummary.value.trim();
+
+    // Skills Parsing Left & Right (csv)
+    let skillsLeft = form.skillsLeft.value.trim();
+    let skillsRight = form.skillsRight.value.trim();
+    const createSkillHTML = (skillStr) => {
+      if (!skillStr) return '<ul><li>No data provided</li></ul>';
+      const arr = skillStr.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      if(arr.length === 0) return '<ul><li>No data provided</li></ul>';
+      return "<ul>" + arr.map(s => `<li>${capitalizeWords(s)}</li>`).join('') + "</ul>";
+    }
+
+    // Experience parsing
+    let experienceRaw = form.experience.value.trim();
+    let experienceList = [];
+    if(experienceRaw.toLowerCase() === 'no' || experienceRaw === '') {
+      experienceList = ['No'];
+    } else {
+      // split by ; and trim
+      experienceList = experienceRaw.split(";").map(e => e.trim()).filter(e => e.length > 0);
+    }
+
+    // Education
+    const education1title = form.education1.value.trim();
+    const education1school = form.education1School.value.trim();
+
+    const education2title = form.education2.value.trim();
+    const education2school = form.education2School.value.trim();
+    const education2gpa = form.education2Gpa.value.trim();
+
+    // Personal Details
+    const dobRaw = form.dob.value;
+    const dobObj = new Date(dobRaw);
+    // Format as dd/mm/yyyy same style
+    const dobFormatted = dobRaw ? dobRaw.split("-").reverse().join("/") : "";
+
+    const gender = form.gender.value;
+    const religion = form.religion.value.trim();
+
+    // Additional Personal Info
+    const additionalInfoItems = [
+      `Address: ${address}`,
+      `Date of Birth: ${dobRaw}`,
+      `Religion: ${religion}`,
+      `Gender: ${gender}`
+    ];
+
+    // Languages processing
+    /// Expected multiline input: 
+    /// Hindi - Bilingual or Proficient (C2)
+    /// English - Intermediate (B1)
+    /// Gujarati - Bilingual or Proficient (C2)
+    const languagesRaw = form.languages.value.trim();
+    /**
+     * Language proficiency bar mapping:
+     * Bilingual or Proficient (C2) = 95%
+     * Intermediate (B1) = 45%
+     * Others = 30%
+     */
+    function getLangWidth(level) {
+      if(!level) return 30;
+      level = level.toLowerCase();
+      if(level.includes("bilingual") || level.includes("proficient") || level.includes("c2")) return 95;
+      if(level.includes("intermediate") || level.includes("b1")) return 45;
+      return 30;
+    }
+
+    let languagesElems = '';
+    if (languagesRaw) {
+      const lines = languagesRaw.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+      lines.forEach(line => {
+        let [lang, prof] = line.split("-").map(t => t.trim());
+        prof = prof || '';
+        languagesElems += `
+          <div class="language">
+            <div class="language-name">${capitalizeWords(lang)}</div>
+            <div class="language-level">${prof}</div>
+            <div class="lang-bar-container" aria-hidden="true">
+              <div class="lang-bar-fill" style="width: ${getLangWidth(prof)}%;"></div>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      // fallback default from screenshot
+      languagesElems = `
+        <div class="language">
+          <div class="language-name">Hindi</div>
+          <div class="language-level">Bilingual or Proficient (C2)</div>
+          <div class="lang-bar-container" aria-hidden="true">
+            <div class="lang-bar-fill lang-bilingual"></div>
+          </div>
+        </div>
+        <div class="language">
+          <div class="language-name">English</div>
+          <div class="language-level">Intermediate (B1)</div>
+          <div class="lang-bar-container" aria-hidden="true">
+            <div class="lang-bar-fill lang-intermediate"></div>
+          </div>
+        </div>
+        <div class="language">
+          <div class="language-name">Gujarati</div>
+          <div class="language-level">Bilingual or Proficient (C2)</div>
+          <div class="lang-bar-container" aria-hidden="true">
+            <div class="lang-bar-fill lang-bilingual"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Fill header
+    document.getElementById('headerName').textContent = fullName;
+    document.getElementById('headerProfession').textContent = profession;
+    document.getElementById('contactInfo').innerHTML =
+      `<span>${address}</span><span>${phone}</span><span>${email}</span>`;
+
+    // Fill professional summary
+    document.getElementById('profSummary').textContent = profSummary;
+
+    // Fill skills left and right
+    document.getElementById('skillsLeftCol').innerHTML = createSkillHTML(skillsLeft);
+    document.getElementById('skillsRightCol').innerHTML = createSkillHTML(skillsRight);
+
+    // Fill experience list
+    const expListElem = document.getElementById('experienceList');
+    expListElem.innerHTML = '';
+    experienceList.forEach(exp => {
+      let li = document.createElement('li');
+      li.textContent = exp;
+      expListElem.appendChild(li);
+    });
+
+    // Education
+    document.getElementById('education1title').textContent = education1title;
+    document.getElementById('education1school').textContent = education1school;
+    document.getElementById('education2title').textContent = education2title;
+    document.getElementById('education2school').textContent = education2school;
+    document.getElementById('education2gpa').textContent = education2gpa;
+
+    // Personal details
+    document.getElementById('pdDob').textContent = dobFormatted;
+    document.getElementById('pdGender').textContent = gender;
+    document.getElementById('pdReligion').textContent = religion;
+    document.getElementById('pdAddress').textContent = address;
+
+    // Additional personal info
+    const additionalList = document.getElementById('additionalPersonalInfo');
+    additionalList.innerHTML = '';
+    additionalInfoItems.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      additionalList.appendChild(li);
+    });
+
+    // Languages section
+    document.getElementById('languagesSection').innerHTML = languagesElems;
+
+    // Hide form, show resume
+    form.style.display = 'none';
+    resume.style.display = 'block';
+
+    // Scroll to top for user to see resume
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Download button: trigger print dialog (user can save as PDF)
+  document.addEventListener('click', function(ev) {
+    const target = ev.target;
+    if (target && target.id === 'downloadBtn') {
+      window.print();
+    }
+  });
+</script>
+
+</body>
+</html>
